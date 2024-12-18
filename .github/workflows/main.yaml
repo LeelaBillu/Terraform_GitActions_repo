@@ -1,0 +1,33 @@
+name: Terraform Plan on Pull Request
+
+on:
+  pull_request:
+    branches:
+      - master # Trigger this workflow for pull requests targeting the 'main' branch
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up AWS credentials using GitHub Secrets
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1  # Set your desired AWS region
+
+      
+
+      # Step 4: Initialize Terraform (download providers, etc.)
+      - name: Terraform Init
+        run: terraform init
+
+      # Step 5: Run Terraform Plan to see the changes
+      - name: Run Terraform Plan
+        run: terraform plan
