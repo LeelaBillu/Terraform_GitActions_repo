@@ -3,35 +3,35 @@ name: Terraform Plan on Pull Request
 on:
   pull_request:
     branches:
-      - main  # Trigger this workflow for pull requests targeting the 'main' branch
+      - main
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code from the repository
+      # Step 1: Check out the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up AWS credentials using GitHub Secrets
-      - name: Set up AWS CLI
+      # Step 2: Configure AWS credentials
+      - name: Set up AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1  # Set your desired AWS region
+          aws-region: us-east-1  # Replace with your desired AWS region
 
-      # Step 3: Set up Terraform (specify the version you want to use)
+      # Step 3: Set up Terraform
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: '1.5.0'  # Specify the Terraform version
+          terraform_version: '1.5.0'
 
-      # Step 4: Initialize Terraform (download providers, etc.)
+      # Step 4: Initialize Terraform
       - name: Terraform Init
         run: terraform init
 
-      # Step 5: Run Terraform Plan to see the changes
-      - name: Run Terraform Plan
+      # Step 5: Run Terraform Plan
+      - name: Terraform Plan
         run: terraform plan
