@@ -1,45 +1,37 @@
-name: Terraform Plan on Pull Request
-#Hi
+name: Terraform Automation
+
 on:
   pull_request:
     branches:
-      - main # Trigger this workflow for pull requests targeting the 'main' branch
+      - main
 
 jobs:
   terraform:
+    name: Terraform Init and Plan
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code from the repository
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Debug - Code Checkout
-        run: echo "Code has been checked out successfully."
 
-      # Step 2: Install Terraform
       - name: Install Terraform
         run: |
-          echo "Starting Terraform installation..."
           sudo apt-get update -y
-          sudo apt-get install -y wget unzip
-          wget https://releases.hashicorp.com/terraform/$(curl -s https://releases.hashicorp.com/terraform/ | grep -oP 'terraform/\K[0-9\.]+' | head -1)/terraform_$(curl -s https://releases.hashicorp.com/terraform/ | grep -oP 'terraform/\K[0-9\.]+' | head -1)_linux_amd64.zip
-          unzip terraform_*_linux_amd64.zip
-          sudo mv terraform /usr/local/bin/
-          echo "Terraform has been installed."
-          terraform --version
+          sudo apt-get install -y gnupg software-properties-common curl
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+          sudo apt-get update -y && sudo apt-get install -y terraform
+          terraform -version
 
-      # Step 3: Initialize Terraform
-      - name: Terraform Init
-        run: |
-          echo "Initializing Terraform..."
-          terraform init
-      - name: Debug - Terraform Init
-        run: echo "Terraform initialization completed."
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1 # Update this to your region
 
-      # Step 4: Run Terraform Plan
-      - name: Run Terraform Plan
-        run: |
-          echo "Running Terraform plan..."
-          terraform plan
-      - name: Debug - Terraform Plan
-        run: echo "Terraform plan executed successfully."
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan
