@@ -9,6 +9,7 @@ jobs:
   terraform:
     name: Terraform Init and Plan
     runs-on: ubuntu-latest
+    working-directory: ./Prod  # Define working directory once for the entire job
 
     steps:
       - name: Checkout repository
@@ -32,8 +33,6 @@ jobs:
 
       - name: Initialize Terraform
         run: terraform init
-        working-directory: ./Prod  # Run terraform init from the Prod directory
 
       - name: Terraform Plan
         run: terraform plan
-        working-directory: ./Prod  # Run terraform plan from the Prod directory
