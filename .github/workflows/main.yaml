@@ -30,15 +30,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1 # Update this to your region
 
-      - name: Navigate to Prod directory
-        run: cd Prod  # Navigate to the Prod directory where your main.tf file is
-
       - name: Initialize Terraform
-        run: |
-        cd Prod
-        terraform init
+        run: terraform init
+        working-directory: ./Prod  # Run terraform init from the Prod directory
 
       - name: Terraform Plan
-        run: |
-        cd Prod
-        terraform plan
+        run: terraform plan
+        working-directory: ./Prod  # Run terraform plan from the Prod directory
