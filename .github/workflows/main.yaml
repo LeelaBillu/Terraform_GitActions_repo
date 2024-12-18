@@ -9,6 +9,7 @@ jobs:
   terraform:
     name: Terraform Init and Plan
     runs-on: ubuntu-latest
+    working-directory: ./Prod  # Set the working directory for all steps in the job
 
     steps:
       - name: Checkout repository
@@ -30,9 +31,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1 # Update this to your region
 
-      - name: Navigate to Prod directory
-        run: cd Prod  # Navigate to the Prod directory where your main.tf file is
-        
       - name: Initialize Terraform
         run: terraform init
 
