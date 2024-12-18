@@ -13,21 +13,33 @@ jobs:
       # Step 1: Checkout the code from the repository
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Debug - Code Checkout
+        run: echo "Code has been checked out successfully."
 
       # Step 2: Install Terraform
       - name: Install Terraform
         run: |
+          echo "Starting Terraform installation..."
           sudo apt-get update -y
           sudo apt-get install -y wget unzip
           wget https://releases.hashicorp.com/terraform/$(curl -s https://releases.hashicorp.com/terraform/ | grep -oP 'terraform/\K[0-9\.]+' | head -1)/terraform_$(curl -s https://releases.hashicorp.com/terraform/ | grep -oP 'terraform/\K[0-9\.]+' | head -1)_linux_amd64.zip
           unzip terraform_*_linux_amd64.zip
           sudo mv terraform /usr/local/bin/
+          echo "Terraform has been installed."
           terraform --version
 
       # Step 3: Initialize Terraform
       - name: Terraform Init
-        run: terraform init
+        run: |
+          echo "Initializing Terraform..."
+          terraform init
+      - name: Debug - Terraform Init
+        run: echo "Terraform initialization completed."
 
       # Step 4: Run Terraform Plan
       - name: Run Terraform Plan
-        run: terraform plan
+        run: |
+          echo "Running Terraform plan..."
+          terraform plan
+      - name: Debug - Terraform Plan
+        run: echo "Terraform plan executed successfully."
