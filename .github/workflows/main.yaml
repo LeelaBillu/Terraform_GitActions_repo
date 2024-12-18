@@ -22,7 +22,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1  # Set your desired AWS region
 
-      
+      -name : checking terrafrom version
+       run : terraform --version
 
       # Step 4: Initialize Terraform (download providers, etc.)
       - name: Terraform Init
