@@ -3,7 +3,7 @@ name: Terraform Plan on Pull Request
 on:
   pull_request:
     branches:
-      - main # Trigger this workflow for pull requests targeting the 'main' branch
+      - main  # Trigger this workflow for pull requests targeting the 'main' branch
 
 jobs:
   terraform:
@@ -21,10 +21,12 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1  # Set your desired AWS region
-          
-      # Step 3: Check Terraform version
-      - name: Check Terraform Version
-        run: terraform --version
+
+      # Step 3: Set up Terraform (specify the version you want to use)
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: '1.5.0'  # Specify the Terraform version
 
       # Step 4: Initialize Terraform (download providers, etc.)
       - name: Terraform Init
