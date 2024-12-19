@@ -42,4 +42,4 @@ jobs:
         run: terraform plan -lock=false
 
       - name : run terrafrom apply
-        run : terraform apply  -auto-approve
+        run : terraform apply  -auto-approve -lock=false
