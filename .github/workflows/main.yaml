@@ -5,11 +5,11 @@ on:
     branches:
       - master # Trigger this workflow for pull requests targeting the 'master' branch
 
-
+  #defaults block
 defaults:
   run:
-    working-directory: ./app  # Ensure this points to the correct directory
-    
+    working-directory: ./Prod  # Ensure this points to the correct directory
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
