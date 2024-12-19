@@ -28,14 +28,10 @@ jobs:
           aws-region: us-east-1  # Set your desired AWS region
 
       # Step 3: Install Terraform (if not already installed)
-      - name: Install Terraform
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gnupg software-properties-common
-          sudo add-apt-repository "deb https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor > /usr/share/keyrings/hashicorp-archive-keyring.gpg
-          sudo apt-get update
-          sudo apt-get install terraform
+      - name: Set Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.5.5"
 
       # Step 4: Initialize Terraform (download providers, etc.)
       - name: Terraform Init
