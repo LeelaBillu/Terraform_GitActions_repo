@@ -39,4 +39,7 @@ jobs:
 
       # Step 5: Run Terraform Plan to see the changes
       - name: Run Terraform Plan
-        run: terraform plan
+        run: terraform plan -lock=false
+
+      - name : run terrafrom apply
+        run : terraform apply  -auto-approve -lock=false
