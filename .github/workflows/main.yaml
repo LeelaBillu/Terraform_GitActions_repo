@@ -9,6 +9,7 @@ on:
 defaults:
   run:
     working-directory: ./app  # Ensure this points to the correct directory
+    
 jobs:
   terraform:
     runs-on: ubuntu-latest
